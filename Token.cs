@@ -13,6 +13,7 @@ namespace Linkhub
         private String _linkID;
         private String _usercode;
         private String _ipaddress;
+        private String _expiration;
         private List<String> _scope;
 
         [DataMember]
@@ -38,6 +39,12 @@ namespace Linkhub
         {
             get { return _usercode; }
             set { _usercode = value; }
+        }
+        [DataMember]
+        public String expiration
+        {
+            get { return _expiration; }
+            set { _expiration = value; }
         }
         [DataMember]
         public String ipaddress
