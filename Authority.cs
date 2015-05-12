@@ -57,8 +57,7 @@ namespace Linkhub
         public Token getToken(String ServiceID, String access_id, List<String> scope,String ForwardIP)
         {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
-            if (String.IsNullOrEmpty(access_id)) throw new LinkhubException(-99999999, "NO Access_id");
- 
+             
             Token result = new Token();
 
             String URI = (_IsTest ? ServiceURL_TEST : ServiceURL_REAL) + "/" + ServiceID + "/Token";
