@@ -62,10 +62,10 @@ namespace Linkhub
 
             String URI = (_IsTest ? ServiceURL_TEST : ServiceURL_REAL) + "/" + ServiceID + "/Token";
 
-            String xDate = DateTime.UtcNow.ToString("s") + "Z";
+            String xDate = getTime();
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
-
+            
             request.Headers.Add("x-lh-date", xDate);
             
             request.Headers.Add("x-lh-version", APIVersion);
@@ -128,6 +128,43 @@ namespace Linkhub
             }
 
             return result;
+        }
+
+        public String getTime()
+        {
+            String URI = (_IsTest ? ServiceURL_TEST : ServiceURL_REAL) + "/Time";
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
+
+            request.Method = "GET";
+
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                using (Stream stream = response.GetResponseStream())
+                {
+                    StreamReader reader = new StreamReader(stream, Encoding.UTF8);
+
+                    return reader.ReadToEnd();
+                }
+
+            }
+            catch (WebException we)
+            {
+                if (we.Response != null)
+                {
+                    Stream stReadData = we.Response.GetResponseStream();
+
+                    DataContractJsonSerializer ser2 = new DataContractJsonSerializer(typeof(Error));
+
+                    Error t = (Error)ser2.ReadObject(stReadData);
+
+                    throw new LinkhubException(t.code, t.message);
+                }
+                throw new LinkhubException(-99999999, we.Message);
+
+            }
         }
 
         public Double getBalance(String BearerToken, String ServiceID)
