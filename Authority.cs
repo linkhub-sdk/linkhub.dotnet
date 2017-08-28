@@ -10,7 +10,12 @@
  * http://www.linkhub.co.kr
  * Author : Kim Seongjun (pallet027@gmail.com)
  * Written : 2014-09-22
+ * Contributor : Jeong Yohan (code@linkhub.co.kr)
+ * Updated : 2017-08-28
  * Thanks for your interest. 
+ * 
+ * Uupdate Log
+ * - 2017/08/28 (GetPartnerURL API added)
  * =================================================================================
 */
 using System;
@@ -208,7 +213,6 @@ namespace Linkhub
                 throw new LinkhubException(-99999999, we.Message);
 
             }
-
         }
 
         public Double getPartnerBalance(String BearerToken, String ServiceID)
@@ -235,6 +239,47 @@ namespace Linkhub
                 PointResult result = (PointResult)ser2.ReadObject(stReadData);
 
                 return result.remainPoint;
+
+            }
+            catch (WebException we)
+            {
+                if (we.Response != null)
+                {
+                    Stream stReadData = we.Response.GetResponseStream();
+
+                    DataContractJsonSerializer ser2 = new DataContractJsonSerializer(typeof(Error));
+
+                    Error t = (Error)ser2.ReadObject(stReadData);
+
+                    throw new LinkhubException(t.code, t.message);
+                }
+
+                throw new LinkhubException(-99999999, we.Message);
+
+            }
+        }
+
+        public String getPartnerURL(String BearerToken, String ServiceID, String TOGO)
+        {
+            String URI = (_IsTest ? ServiceURL_TEST : ServiceURL_REAL) + "/" + ServiceID + "/URL?TG="+TOGO;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
+
+            request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
+
+            request.Method = "GET";
+
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                Stream stReadData = response.GetResponseStream();
+
+                DataContractJsonSerializer ser2 = new DataContractJsonSerializer(typeof(URLResult));
+
+                URLResult result = (URLResult)ser2.ReadObject(stReadData);
+
+                return result.url;
 
             }
             catch (WebException we)
@@ -289,6 +334,13 @@ namespace Linkhub
                 set { _message = value; }
             }
 
+        }
+
+        [DataContract]
+        public class URLResult
+        {
+            [DataMember]
+            public String url;
         }
        
         [DataContract]
