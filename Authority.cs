@@ -11,7 +11,7 @@
  * Author : Kim Seongjun (pallet027@gmail.com)
  * Written : 2014-09-22
  * Contributor : Jeong Yohan (code@linkhub.co.kr)
- * Updated : 2017-08-28
+ * Updated : 2020-07-14
  * Thanks for your interest. 
  * 
  * Uupdate Log
@@ -33,6 +33,7 @@ namespace Linkhub
     {
         private const String APIVersion = "1.0";
         private const String ServiceURL_REAL = "https://auth.linkhub.co.kr";
+        private const String ServiceURL_REAL_GA = "https://ga-auth.linkhub.co.kr";
         private const String ServiceURL_TEST = "https://demo.innopost.com";
 
         private String _LinkID;
@@ -56,18 +57,18 @@ namespace Linkhub
 
         public Token getToken(String ServiceID, String access_id, List<String> scope)
         {
-            return getToken(ServiceID, access_id, scope, null);
+            return getToken(ServiceID, access_id, scope, null, false);
         }
 
-        public Token getToken(String ServiceID, String access_id, List<String> scope,String ForwardIP)
+        public Token getToken(String ServiceID, String access_id, List<String> scope,String ForwardIP, bool UseStaticIP)
         {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
              
             Token result = new Token();
 
-            String URI = (_IsTest ? ServiceURL_TEST : ServiceURL_REAL) + "/" + ServiceID + "/Token";
+            String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/" + ServiceID + "/Token";
 
-            String xDate = getTime();
+            String xDate = getTime(UseStaticIP);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
             
@@ -137,7 +138,12 @@ namespace Linkhub
 
         public String getTime()
         {
-            String URI = (_IsTest ? ServiceURL_TEST : ServiceURL_REAL) + "/Time";
+            return getTime(false);
+        }
+
+        public String getTime(bool UseStaticIP)
+        {
+            String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/Time";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
@@ -174,10 +180,15 @@ namespace Linkhub
 
         public Double getBalance(String BearerToken, String ServiceID)
         {
+            return getBalance(BearerToken, ServiceID, false);
+        }
+
+        public Double getBalance(String BearerToken, String ServiceID, bool UseStaticIP)
+        {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
             if (String.IsNullOrEmpty(BearerToken)) throw new LinkhubException(-99999999, "NO BearerToken");
 
-            String URI = (_IsTest ? ServiceURL_TEST : ServiceURL_REAL) + "/" + ServiceID + "/Point";
+            String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/" + ServiceID + "/Point";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
@@ -215,12 +226,18 @@ namespace Linkhub
             }
         }
 
+
         public Double getPartnerBalance(String BearerToken, String ServiceID)
+        {
+            return getPartnerBalance(BearerToken, ServiceID, false);
+        }
+
+        public Double getPartnerBalance(String BearerToken, String ServiceID, bool UseStaticIP)
         {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
             if (String.IsNullOrEmpty(BearerToken)) throw new LinkhubException(-99999999, "NO BearerToken");
 
-            String URI = (_IsTest ? ServiceURL_TEST : ServiceURL_REAL) + "/" + ServiceID + "/PartnerPoint";
+            String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/" + ServiceID + "/PartnerPoint";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
@@ -261,7 +278,12 @@ namespace Linkhub
 
         public String getPartnerURL(String BearerToken, String ServiceID, String TOGO)
         {
-            String URI = (_IsTest ? ServiceURL_TEST : ServiceURL_REAL) + "/" + ServiceID + "/URL?TG="+TOGO;
+            return getPartnerURL(BearerToken, ServiceID, TOGO, false);
+        }
+
+        public String getPartnerURL(String BearerToken, String ServiceID, String TOGO, bool UseStaticIP)
+        {
+            String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/" + ServiceID + "/URL?TG=" + TOGO;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
