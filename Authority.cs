@@ -11,7 +11,7 @@
  * Author : Kim Seongjun (pallet027@gmail.com)
  * Written : 2014-09-22
  * Contributor : Jeong Yohan (code@linkhub.co.kr)
- * Updated : 2020-07-14
+ * Updated : 2020-10-21
  * Thanks for your interest. 
  * 
  * Uupdate Log
