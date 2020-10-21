@@ -143,17 +143,14 @@ namespace Linkhub
 
         public String getTime(bool UseStaticIP, bool UseLocalTimeYN)
         {
-            Console.WriteLine(UseLocalTimeYN);
             if (UseLocalTimeYN)
             {
-                Console.WriteLine("UseLocalTimeYN True");
                 DateTime localTime = DateTime.UtcNow;
 
                 return localTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
             }
             else
             {
-                Console.WriteLine("UseLocalTimeYN false");
                 String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/Time";
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
