@@ -57,10 +57,10 @@ namespace Linkhub
 
         public Token getToken(String ServiceID, String access_id, List<String> scope)
         {
-            return getToken(ServiceID, access_id, scope, null, false);
+            return getToken(ServiceID, access_id, scope, null, false, false);
         }
 
-        public Token getToken(String ServiceID, String access_id, List<String> scope,String ForwardIP, bool UseStaticIP)
+        public Token getToken(String ServiceID, String access_id, List<String> scope, String ForwardIP, bool UseStaticIP, bool UseLocalTimeYN)
         {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
              
@@ -68,7 +68,7 @@ namespace Linkhub
 
             String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/" + ServiceID + "/Token";
 
-            String xDate = getTime(UseStaticIP);
+            String xDate = getTime(UseStaticIP, UseLocalTimeYN);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
             
@@ -138,43 +138,55 @@ namespace Linkhub
 
         public String getTime()
         {
-            return getTime(false);
+            return getTime(false, false);
         }
 
-        public String getTime(bool UseStaticIP)
+        public String getTime(bool UseStaticIP, bool UseLocalTimeYN)
         {
-            String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/Time";
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
-
-            request.Method = "GET";
-
-            try
+            Console.WriteLine(UseLocalTimeYN);
+            if (UseLocalTimeYN)
             {
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Console.WriteLine("UseLocalTimeYN True");
+                DateTime localTime = DateTime.UtcNow;
 
-                using (Stream stream = response.GetResponseStream())
-                {
-                    StreamReader reader = new StreamReader(stream, Encoding.UTF8);
-
-                    return reader.ReadToEnd();
-                }
-
+                return localTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
             }
-            catch (WebException we)
+            else
             {
-                if (we.Response != null)
+                Console.WriteLine("UseLocalTimeYN false");
+                String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/Time";
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
+
+                request.Method = "GET";
+
+                try
                 {
-                    Stream stReadData = we.Response.GetResponseStream();
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-                    DataContractJsonSerializer ser2 = new DataContractJsonSerializer(typeof(Error));
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        StreamReader reader = new StreamReader(stream, Encoding.UTF8);
 
-                    Error t = (Error)ser2.ReadObject(stReadData);
+                        return reader.ReadToEnd();
+                    }
 
-                    throw new LinkhubException(t.code, t.message);
                 }
-                throw new LinkhubException(-99999999, we.Message);
+                catch (WebException we)
+                {
+                    if (we.Response != null)
+                    {
+                        Stream stReadData = we.Response.GetResponseStream();
 
+                        DataContractJsonSerializer ser2 = new DataContractJsonSerializer(typeof(Error));
+
+                        Error t = (Error)ser2.ReadObject(stReadData);
+
+                        throw new LinkhubException(t.code, t.message);
+                    }
+                    throw new LinkhubException(-99999999, we.Message);
+
+                }
             }
         }
 
