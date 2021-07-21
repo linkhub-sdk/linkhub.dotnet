@@ -11,7 +11,7 @@
  * Author : Kim Seongjun (pallet027@gmail.com)
  * Written : 2014-09-22
  * Contributor : Jeong Yohan (code@linkhub.co.kr)
- * Updated : 2020-10-21
+ * Updated : 2021-07-21
  * Thanks for your interest. 
  * 
  * Uupdate Log
@@ -31,7 +31,7 @@ namespace Linkhub
 {
     public class Authority
     {
-        private const String APIVersion = "1.0";
+        private const String APIVersion = "2.0";
         private const String ServiceURL_REAL = "https://auth.linkhub.co.kr";
         private const String ServiceURL_REAL_GA = "https://ga-auth.linkhub.co.kr";
         private const String ServiceURL_TEST = "https://demo.innopost.com";
@@ -94,12 +94,12 @@ namespace Linkhub
             }
 
             String HMAC_target = "POST\n";
-            HMAC_target += Convert.ToBase64String(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(postData))) + "\n";
+            HMAC_target += Convert.ToBase64String(SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(postData))) + "\n";
             HMAC_target += xDate + "\n";
             if (ForwardIP != null) HMAC_target += ForwardIP + "\n";
             HMAC_target += APIVersion + "\n";
             HMAC_target += "/" + ServiceID + "/Token";
-            HMACSHA1 hmac = new HMACSHA1(Convert.FromBase64String(_SecretKey));
+            HMACSHA256 hmac = new HMACSHA256(Convert.FromBase64String(_SecretKey));
 
             String bearerToken = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(HMAC_target)));
 
