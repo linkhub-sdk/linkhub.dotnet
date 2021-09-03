@@ -67,24 +67,11 @@ namespace Linkhub
              
             Token result = new Token();
 
-            String URI;
-
-            if (UseGAIP)
-            {
-                URI = ServiceURL_REAL_GA +"/" + ServiceID + "/Token";
-            }
-            else if (UseStaticIP)
-            {
-                URI = ServiceURL_REAL_Static +"/" + ServiceID + "/Token";
-            }
-            else
-            {
-                URI = ServiceURL_REAL +"/" + ServiceID + "/Token";
-            }
+            String URL = getTargetURL(UseStaticIP, UseGAIP);
 
             String xDate = getTime(UseStaticIP, UseLocalTimeYN, UseGAIP);
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL + "/" + ServiceID + "/Token");
             
             request.Headers.Add("x-lh-date", xDate);
             
@@ -165,22 +152,9 @@ namespace Linkhub
             }
             else
             {
-                String URI;
+                String URL = getTargetURL(UseStaticIP, UseGAIP);
 
-                if (UseGAIP)
-                {
-                    URI = ServiceURL_REAL_GA + "/Time";
-                }
-                else if (UseStaticIP)
-                {
-                    URI = ServiceURL_REAL_Static + "/Time";
-                }
-                else
-                {
-                    URI = ServiceURL_REAL + "/Time";
-                }
-
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL + "/Time");
 
                 request.Method = "GET";
 
@@ -216,15 +190,17 @@ namespace Linkhub
 
         public Double getBalance(String BearerToken, String ServiceID)
         {
-            return getBalance(BearerToken, ServiceID, false);
+            return getBalance(BearerToken, ServiceID, false, false);
         }
 
-        public Double getBalance(String BearerToken, String ServiceID, bool UseStaticIP)
+        public Double getBalance(String BearerToken, String ServiceID, bool UseStaticIP, bool UseGAIP)
         {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
             if (String.IsNullOrEmpty(BearerToken)) throw new LinkhubException(-99999999, "NO BearerToken");
 
-            String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/" + ServiceID + "/Point";
+            String URL = getTargetURL(UseStaticIP, UseGAIP);
+
+            String URI = URL + "/" + ServiceID + "/Point";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
@@ -262,18 +238,19 @@ namespace Linkhub
             }
         }
 
-
         public Double getPartnerBalance(String BearerToken, String ServiceID)
         {
-            return getPartnerBalance(BearerToken, ServiceID, false);
+            return getPartnerBalance(BearerToken, ServiceID, false, false);
         }
 
-        public Double getPartnerBalance(String BearerToken, String ServiceID, bool UseStaticIP)
+        public Double getPartnerBalance(String BearerToken, String ServiceID, bool UseStaticIP, bool UseGAIP)
         {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
             if (String.IsNullOrEmpty(BearerToken)) throw new LinkhubException(-99999999, "NO BearerToken");
 
-            String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/" + ServiceID + "/PartnerPoint";
+            String URL = getTargetURL(UseStaticIP, UseGAIP);
+
+            String URI = URL + "/" + ServiceID + "/PartnerPoint";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
@@ -314,12 +291,14 @@ namespace Linkhub
 
         public String getPartnerURL(String BearerToken, String ServiceID, String TOGO)
         {
-            return getPartnerURL(BearerToken, ServiceID, TOGO, false);
+            return getPartnerURL(BearerToken, ServiceID, TOGO, false, false);
         }
 
-        public String getPartnerURL(String BearerToken, String ServiceID, String TOGO, bool UseStaticIP)
+        public String getPartnerURL(String BearerToken, String ServiceID, String TOGO, bool UseStaticIP, bool UseGAIP)
         {
-            String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/" + ServiceID + "/URL?TG=" + TOGO;
+            String URL = getTargetURL(UseStaticIP, UseGAIP);
+
+            String URI = URL + "/" + ServiceID + "/URL?TG=" + TOGO;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
@@ -355,6 +334,22 @@ namespace Linkhub
 
                 throw new LinkhubException(-99999999, we.Message);
 
+            }
+        }
+
+        private String getTargetURL(bool UseStaticIP, bool UseGAIP)
+        {
+            if (UseGAIP)
+            {
+                return ServiceURL_REAL_GA;
+            }
+            else if (UseStaticIP)
+            {
+                return ServiceURL_REAL_Static;
+            }
+            else
+            {
+                return ServiceURL_REAL;
             }
         }
 
