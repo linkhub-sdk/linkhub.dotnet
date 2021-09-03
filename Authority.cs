@@ -33,6 +33,7 @@ namespace Linkhub
     {
         private const String APIVersion = "2.0";
         private const String ServiceURL_REAL = "https://auth.linkhub.co.kr";
+        private const String ServiceURL_REAL_Static = "https://static-auth.linkhub.co.kr";
         private const String ServiceURL_REAL_GA = "https://ga-auth.linkhub.co.kr";
         private const String ServiceURL_TEST = "https://demo.innopost.com";
 
@@ -57,18 +58,31 @@ namespace Linkhub
 
         public Token getToken(String ServiceID, String access_id, List<String> scope)
         {
-            return getToken(ServiceID, access_id, scope, null, false, false);
+            return getToken(ServiceID, access_id, scope, null, false, false, false);
         }
 
-        public Token getToken(String ServiceID, String access_id, List<String> scope, String ForwardIP, bool UseStaticIP, bool UseLocalTimeYN)
+        public Token getToken(String ServiceID, String access_id, List<String> scope, String ForwardIP, bool UseStaticIP, bool UseLocalTimeYN, bool UseGAIP)
         {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
              
             Token result = new Token();
 
-            String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/" + ServiceID + "/Token";
+            String URI;
 
-            String xDate = getTime(UseStaticIP, UseLocalTimeYN);
+            if (UseGAIP)
+            {
+                URI = ServiceURL_REAL_GA +"/" + ServiceID + "/Token";
+            }
+            else if (UseStaticIP)
+            {
+                URI = ServiceURL_REAL_Static +"/" + ServiceID + "/Token";
+            }
+            else
+            {
+                URI = ServiceURL_REAL +"/" + ServiceID + "/Token";
+            }
+
+            String xDate = getTime(UseStaticIP, UseLocalTimeYN, UseGAIP);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
             
@@ -138,10 +152,10 @@ namespace Linkhub
 
         public String getTime()
         {
-            return getTime(false, false);
+            return getTime(false, false, false);
         }
 
-        public String getTime(bool UseStaticIP, bool UseLocalTimeYN)
+        public String getTime(bool UseStaticIP, bool UseLocalTimeYN, bool UseGAIP)
         {
             if (UseLocalTimeYN)
             {
@@ -151,7 +165,20 @@ namespace Linkhub
             }
             else
             {
-                String URI = (UseStaticIP ? ServiceURL_REAL_GA : ServiceURL_REAL) + "/Time";
+                String URI;
+
+                if (UseGAIP)
+                {
+                    URI = ServiceURL_REAL_GA + "/Time";
+                }
+                else if (UseStaticIP)
+                {
+                    URI = ServiceURL_REAL_Static + "/Time";
+                }
+                else
+                {
+                    URI = ServiceURL_REAL + "/Time";
+                }
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
