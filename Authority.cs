@@ -61,6 +61,11 @@ namespace Linkhub
             return getToken(ServiceID, access_id, scope, null, false, false, false);
         }
 
+        public Token getToken(String ServiceID, String access_id, List<String> scope, String ForwardIP, bool UseStaticIP, bool UseLocalTimeYN)
+        {
+            return getToken(ServiceID, access_id, scope, ForwardIP, UseStaticIP, UseLocalTimeYN, false);
+        }
+
         public Token getToken(String ServiceID, String access_id, List<String> scope, String ForwardIP, bool UseStaticIP, bool UseLocalTimeYN, bool UseGAIP)
         {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
@@ -142,6 +147,11 @@ namespace Linkhub
             return getTime(false, false, false);
         }
 
+        public String getTime(bool UseStaticIP, bool UseLocalTimeYN)
+        {
+            return getTime(UseStaticIP, UseLocalTimeYN, false);
+        }
+
         public String getTime(bool UseStaticIP, bool UseLocalTimeYN, bool UseGAIP)
         {
             if (UseLocalTimeYN)
@@ -191,6 +201,11 @@ namespace Linkhub
         public Double getBalance(String BearerToken, String ServiceID)
         {
             return getBalance(BearerToken, ServiceID, false, false);
+        }
+
+        public Double getBalance(String BearerToken, String ServiceID, bool UseStaticIP)
+        {
+          return getBalance(BearerToken, ServiceID, UseStaticIP, false);
         }
 
         public Double getBalance(String BearerToken, String ServiceID, bool UseStaticIP, bool UseGAIP)
@@ -243,6 +258,11 @@ namespace Linkhub
             return getPartnerBalance(BearerToken, ServiceID, false, false);
         }
 
+        public Double getPartnerBalance(String BearerToken, String ServiceID, bool UseStaticIP)
+        {
+            return getPartnerBalance(BearerToken, ServiceID, UseStaticIP, false);
+        }
+
         public Double getPartnerBalance(String BearerToken, String ServiceID, bool UseStaticIP, bool UseGAIP)
         {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
@@ -292,6 +312,11 @@ namespace Linkhub
         public String getPartnerURL(String BearerToken, String ServiceID, String TOGO)
         {
             return getPartnerURL(BearerToken, ServiceID, TOGO, false, false);
+        }
+
+        public String getPartnerURL(String BearerToken, String ServiceID, String TOGO, bool UseStaticIP)
+        {
+            return getPartnerURL(BearerToken, ServiceID, TOGO, UseStaticIP, false);
         }
 
         public String getPartnerURL(String BearerToken, String ServiceID, String TOGO, bool UseStaticIP, bool UseGAIP)
