@@ -5,15 +5,15 @@
  * several base infomation(ex. Remain point).
  *
  * This library coded with .Net framework 3.5, To Process JSON and HMACSHA1.
- * If you need any other version of framework, plz contact with below. 
- * 
- * http://www.linkhub.co.kr
- * Author : Kim Seongjun (pallet027@gmail.com)
+ * If you need any other version of framework, plz contact with below.
+ *
+ * https://www.linkhub.co.kr
+ * Author : Kim Seongjun
  * Written : 2014-09-22
  * Contributor : Jeong Yohan (code@linkhub.co.kr)
- * Updated : 2021-07-21
- * Thanks for your interest. 
- * 
+ * Updated : 2022-04-25
+ * Thanks for your interest.
+ *
  * Uupdate Log
  * - 2017/08/28 (GetPartnerURL API added)
  * =================================================================================
