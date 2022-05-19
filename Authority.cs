@@ -10,7 +10,7 @@
  * https://www.linkhub.co.kr
  * Author : Kim Seongjun
  * Written : 2014-09-22
- * Contributor : Jeong Yohan (code@linkhub.co.kr)
+ * Contributor : Jeong Yohan (code@linkhubcorp.com)
  * Updated : 2022-04-25
  * Thanks for your interest.
  *
@@ -40,7 +40,7 @@ namespace Linkhub
         private String _LinkID;
         private bool _IsTest = false;
         private String _SecretKey;
-      
+
         public bool IsTest
         {
             get { return _IsTest; }
@@ -69,7 +69,7 @@ namespace Linkhub
         public Token getToken(String ServiceID, String access_id, List<String> scope, String ForwardIP, bool UseStaticIP, bool UseLocalTimeYN, bool UseGAIP)
         {
             if (String.IsNullOrEmpty(ServiceID)) throw new LinkhubException(-99999999, "NO ServiceID");
-             
+
             Token result = new Token();
 
             String URL = getTargetURL(UseStaticIP, UseGAIP);
@@ -77,9 +77,9 @@ namespace Linkhub
             String xDate = getTime(UseStaticIP, UseLocalTimeYN, UseGAIP);
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL + "/" + ServiceID + "/Token");
-            
+
             request.Headers.Add("x-lh-date", xDate);
-            
+
             request.Headers.Add("x-lh-version", APIVersion);
 
             if (ForwardIP != null) request.Headers.Add("x-lh-forwarded", ForwardIP);
@@ -110,7 +110,7 @@ namespace Linkhub
             String bearerToken = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(HMAC_target)));
 
             request.Headers.Add("Authorization", "LINKHUB" + " "+ _LinkID + " " + bearerToken);
-            
+
             request.Method = "POST";
 
             byte[] btPostDAta = Encoding.UTF8.GetBytes(postData);
@@ -420,7 +420,7 @@ namespace Linkhub
             [DataMember]
             public String url;
         }
-       
+
         [DataContract]
         private class TokenRequest
         {
@@ -441,6 +441,6 @@ namespace Linkhub
             }
 
         }
-        
+
     }
 }
