@@ -82,6 +82,8 @@ namespace Linkhub
 
             request.Headers.Add("x-lh-version", APIVersion);
 
+            request.UserAgent = "DOTNET LINKHUB SDK";
+
             if (ForwardIP != null) request.Headers.Add("x-lh-forwarded", ForwardIP);
 
             TokenRequest _TR = new TokenRequest();
