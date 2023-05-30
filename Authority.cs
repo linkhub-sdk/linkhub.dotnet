@@ -170,6 +170,8 @@ namespace Linkhub
 
                 request.Method = "GET";
 
+                request.UserAgent = "DOTNET LINKHUB SDK";
+
                 try
                 {
                     HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -224,6 +226,8 @@ namespace Linkhub
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
             request.Method = "GET";
+
+            request.UserAgent = "DOTNET LINKHUB SDK";
 
             try
             {
@@ -280,6 +284,8 @@ namespace Linkhub
 
             request.Method = "GET";
 
+            request.UserAgent = "DOTNET LINKHUB SDK";
+
             try
             {
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -332,6 +338,8 @@ namespace Linkhub
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
             request.Method = "GET";
+
+            request.UserAgent = "DOTNET LINKHUB SDK";
 
             try
             {
