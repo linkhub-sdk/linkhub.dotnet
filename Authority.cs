@@ -40,11 +40,18 @@ namespace Linkhub
         private String _LinkID;
         private bool _IsTest = false;
         private String _SecretKey;
+        private String _AuthURL;
 
         public bool IsTest
         {
             get { return _IsTest; }
             set { _IsTest = value; }
+        }
+
+        public string AuthURL
+        {
+            get { return _AuthURL; }
+            set {_AuthURL = value; }
         }
 
         public Authority(String LinkID, String SecretKey)
@@ -374,6 +381,10 @@ namespace Linkhub
 
         private String getTargetURL(bool UseStaticIP, bool UseGAIP)
         {
+            if (_AuthURL != null) {
+                return _AuthURL;
+            }
+
             if (UseGAIP)
             {
                 return ServiceURL_REAL_GA;
