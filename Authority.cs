@@ -51,7 +51,11 @@ namespace Linkhub
         public string AuthURL
         {
             get { return _AuthURL; }
+<<<<<<< HEAD
             set { _AuthURL = value; }
+=======
+            set {_AuthURL = value; }
+>>>>>>> 55fe8b92fa8c91b30748f7a1ffb64d1f613b4d02
         }
 
         public Authority(String LinkID, String SecretKey)
@@ -381,8 +385,12 @@ namespace Linkhub
 
         private String getTargetURL(bool UseStaticIP, bool UseGAIP)
         {
+<<<<<<< HEAD
             if (_AuthURL != null)
             {
+=======
+            if (_AuthURL != null) {
+>>>>>>> 55fe8b92fa8c91b30748f7a1ffb64d1f613b4d02
                 return _AuthURL;
             }
 
