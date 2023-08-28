@@ -40,11 +40,18 @@ namespace Linkhub
         private String _LinkID;
         private bool _IsTest = false;
         private String _SecretKey;
+        private String _AuthURL;
 
         public bool IsTest
         {
             get { return _IsTest; }
             set { _IsTest = value; }
+        }
+
+        public string AuthURL
+        {
+            get { return _AuthURL; }
+            set { _AuthURL = value; }
         }
 
         public Authority(String LinkID, String SecretKey)
@@ -111,7 +118,7 @@ namespace Linkhub
 
             String bearerToken = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(HMAC_target)));
 
-            request.Headers.Add("Authorization", "LINKHUB" + " "+ _LinkID + " " + bearerToken);
+            request.Headers.Add("Authorization", "LINKHUB" + " " + _LinkID + " " + bearerToken);
 
             request.Method = "POST";
 
@@ -119,7 +126,7 @@ namespace Linkhub
 
             request.ContentLength = btPostDAta.Length;
 
-            request.GetRequestStream().Write(btPostDAta,0,btPostDAta.Length);
+            request.GetRequestStream().Write(btPostDAta, 0, btPostDAta.Length);
 
             try
             {
@@ -131,12 +138,12 @@ namespace Linkhub
             }
             catch (Exception we)
             {
-                if (we is WebException &&  ((WebException)we).Response != null)
+                if (we is WebException && ((WebException)we).Response != null)
                 {
                     Stream stReadData = ((WebException)we).Response.GetResponseStream();
                     DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Error));
                     Error t = (Error)ser.ReadObject(stReadData);
-                    throw new LinkhubException( t.code, t.message);
+                    throw new LinkhubException(t.code, t.message);
                 }
                 throw new LinkhubException(-99999999, we.Message);
             }
@@ -209,7 +216,7 @@ namespace Linkhub
 
         public Double getBalance(String BearerToken, String ServiceID, bool UseStaticIP)
         {
-          return getBalance(BearerToken, ServiceID, UseStaticIP, false);
+            return getBalance(BearerToken, ServiceID, UseStaticIP, false);
         }
 
         public Double getBalance(String BearerToken, String ServiceID, bool UseStaticIP, bool UseGAIP)
@@ -374,6 +381,11 @@ namespace Linkhub
 
         private String getTargetURL(bool UseStaticIP, bool UseGAIP)
         {
+            if (_AuthURL != null)
+            {
+                return _AuthURL;
+            }
+
             if (UseGAIP)
             {
                 return ServiceURL_REAL_GA;
