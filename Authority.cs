@@ -85,6 +85,8 @@ namespace Linkhub
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL + "/" + ServiceID + "/Token");
 
+            request.Timeout = 180;
+
             request.Headers.Add("x-lh-date", xDate);
 
             request.Headers.Add("x-lh-version", APIVersion);
@@ -175,6 +177,8 @@ namespace Linkhub
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL + "/Time");
 
+                request.Timeout = 180;
+
                 request.Method = "GET";
 
                 request.UserAgent = "DOTNET LINKHUB SDK";
@@ -229,6 +233,8 @@ namespace Linkhub
             String URI = URL + "/" + ServiceID + "/Point";
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
+
+            request.Timeout = 180;
 
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
@@ -287,6 +293,8 @@ namespace Linkhub
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
+            request.Timeout = 180;
+
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
             request.Method = "GET";
@@ -341,6 +349,8 @@ namespace Linkhub
             String URI = URL + "/" + ServiceID + "/URL?TG=" + TOGO;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
+
+            request.Timeout = 180;
 
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
