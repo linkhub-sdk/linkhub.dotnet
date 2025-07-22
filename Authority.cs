@@ -11,7 +11,7 @@
  * Author : Kim Seongjun
  * Written : 2014-09-22
  * Contributor : Jeong Yohan (code@linkhubcorp.com)
- * Updated : 2025-07-22s
+ * Updated : 2025-07-22
  * Thanks for your interest.
  *
  * =================================================================================
