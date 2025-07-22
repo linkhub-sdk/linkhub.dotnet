@@ -11,7 +11,7 @@
  * Author : Kim Seongjun
  * Written : 2014-09-22
  * Contributor : Jeong Yohan (code@linkhubcorp.com)
- * Updated : 2022-04-25
+ * Updated : 2025-07-22s
  * Thanks for your interest.
  *
  * =================================================================================
@@ -83,7 +83,7 @@ namespace Linkhub
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL + "/" + ServiceID + "/Token");
 
-            request.timeout = 180 * 1000;
+            request.Timeout = 180 * 1000;
 
             request.Headers.Add("x-lh-date", xDate);
 
@@ -175,7 +175,7 @@ namespace Linkhub
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL + "/Time");
 
-                request.timeout = 180 * 1000;
+                request.Timeout = 180 * 1000;
 
                 request.Method = "GET";
 
@@ -232,7 +232,7 @@ namespace Linkhub
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
-            request.timeout = 180 * 1000;
+            request.Timeout = 180 * 1000;
 
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
@@ -271,7 +271,7 @@ namespace Linkhub
         }
 
         public Double getPartnerBalance(String BearerToken, String ServiceID)
-        {s
+        {
             return getPartnerBalance(BearerToken, ServiceID, false, false);
         }
 
@@ -291,7 +291,7 @@ namespace Linkhub
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
-            request.timeout = 180 * 1000;
+            request.Timeout = 180 * 1000;
 
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
@@ -348,7 +348,7 @@ namespace Linkhub
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
-            request.timeout = 180 * 1000;
+            request.Timeout = 180 * 1000;
 
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
