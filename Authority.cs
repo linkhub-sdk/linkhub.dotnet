@@ -14,8 +14,6 @@
  * Updated : 2022-04-25
  * Thanks for your interest.
  *
- * Uupdate Log
- * - 2017/08/28 (GetPartnerURL API added)
  * =================================================================================
 */
 using System;
@@ -273,7 +271,7 @@ namespace Linkhub
         }
 
         public Double getPartnerBalance(String BearerToken, String ServiceID)
-        {
+        {s
             return getPartnerBalance(BearerToken, ServiceID, false, false);
         }
 
