@@ -85,7 +85,7 @@ namespace Linkhub
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL + "/" + ServiceID + "/Token");
 
-            request.Timeout = 180;
+            request.timeout = 180 * 1000;
 
             request.Headers.Add("x-lh-date", xDate);
 
@@ -177,7 +177,7 @@ namespace Linkhub
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL + "/Time");
 
-                request.Timeout = 180;
+                request.timeout = 180 * 1000;
 
                 request.Method = "GET";
 
@@ -234,7 +234,7 @@ namespace Linkhub
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
-            request.Timeout = 180;
+            request.timeout = 180 * 1000;
 
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
@@ -293,7 +293,7 @@ namespace Linkhub
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
-            request.Timeout = 180;
+            request.timeout = 180 * 1000;
 
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
@@ -350,7 +350,7 @@ namespace Linkhub
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URI);
 
-            request.Timeout = 180;
+            request.timeout = 180 * 1000;
 
             request.Headers.Add("Authorization", "Bearer" + " " + BearerToken);
 
